@@ -70,9 +70,9 @@ Ignore mail body after the specified number of lines.
 .It Fl p Ar pipe
 Use the specified pipe to interface
 .Xr sendmail 8 .
-Default is unix:/var/spool/milter-regex/sock.
+Default is unix:/var/run/milter-regex/sock.
 .It Fl u Ar user
-Run as the specified user instead of the default, _milter-regex.
+Run as the specified user instead of the default, nobody.
 When
 .Nm
 is started as root, it calls
