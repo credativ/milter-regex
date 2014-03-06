@@ -96,7 +96,7 @@ static void		 usage(const char *);
 static void		 msg(int, struct context *, const char *, ...);
 
 #define USER		"_milter-regex"
-#define OCONN		"unix:/var/spool/milter-regex/sock"
+#define OCONN		"unix:/var/run/milter-regex/sock"
 #define RCODE_REJECT	"554"
 #define RCODE_TEMPFAIL	"451"
 #define XCODE_REJECT	"5.7.1"
@@ -782,7 +782,7 @@ main(int argc, char **argv)
 		perror("daemon");
 		goto done;
 	}
-	umask(0177);
+	umask(07);
 
 	msg(LOG_INFO, NULL, "started: %s", rcsid);
 	r = smfi_main();
