@@ -1,0 +1,26 @@
+From d1978aa9c272c54c5cec4d44142238914d2c2837 Mon Sep 17 00:00:00 2001
+From: Bastian Blank <bastian.blank@credativ.de>
+Date: Thu, 6 Mar 2014 13:43:14 +0100
+Subject: Update defaults
+
+Set default user to nobody and default socket to
+unix:/var/run/milter-regex/sock.
+---
+ milter-regex.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/milter-regex.c b/milter-regex.c
+index 0281748..39e8c7c 100644
+--- a/milter-regex.c
++++ b/milter-regex.c
+@@ -95,8 +95,8 @@ static sfsistat		 cb_close(SMFICTX *);
+ static void		 usage(const char *);
+ static void		 msg(int, struct context *, const char *, ...);
+ 
+-#define USER		"_milter-regex"
+-#define OCONN		"unix:/var/spool/milter-regex/sock"
++#define USER		"nobody"
++#define OCONN		"unix:/var/run/milter-regex/sock"
+ #define RCODE_REJECT	"554"
+ #define RCODE_TEMPFAIL	"451"
+ #define XCODE_REJECT	"5.7.1"
