@@ -4,10 +4,10 @@ Priority: optional
 Maintainer: Bastian Blank <bastian.blank@credativ.de>
 Build-Depends: debhelper (>= 8.0.0), libbsd-dev, libmilter-dev
 Standards-Version: 3.9.4
-Homepage: 
+Homepage: http://www.benzedrine.cx/milter-regex.html
 
 Package: milter-regex
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
+Description: Milter plugin for regular expression filtering
  <insert long description, indented with spaces>
