@@ -1,0 +1,5 @@
+milter-regex (2.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Bastian Blank <bastian.blank@credativ.de>  Thu, 06 Mar 2014 13:00:44 +0100
