@@ -19,6 +19,7 @@ NAME=milter-regex
 DAEMON=/usr/sbin/milter-regex
 DAEMON_ARGS=""
 DAEMON_USER=nobody
+SOCKET_GROUP=root
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
@@ -36,20 +37,14 @@ SCRIPTNAME=/etc/init.d/$NAME
 # and status_of_proc is working.
 . /lib/lsb/init-functions
 
-create_rundir()
-{
-	if ! [ -d /var/run/milter-regex ]; then
-		mkdir -m 755 /var/run/milter-regex
-		chown $DAEMON_USER /var/run/milter-regex
-	fi
-}
-
 #
 # Function that starts the daemon/service
 #
 do_start()
 {
-	create_rundir
+	mkdir -p -m 700 /var/run/milter-regex
+	chown -R $DAEMON_USER:$SOCKET_GROUP /var/run/milter-regex
+	chmod 2750 /var/run/milter-regex
 
 	# Return
 	#   0 if daemon has been started
