@@ -782,7 +782,7 @@ main(int argc, char **argv)
 		perror("daemon");
 		goto done;
 	}
-	umask(0177);
+	umask(07);
 
 	msg(LOG_INFO, NULL, "started: %s", rcsid);
 	r = smfi_main();

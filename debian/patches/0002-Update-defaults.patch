@@ -1,16 +1,33 @@
-From d1978aa9c272c54c5cec4d44142238914d2c2837 Mon Sep 17 00:00:00 2001
+From 9325cf2647d7dcddec86582ca6f76ac38d3254f5 Mon Sep 17 00:00:00 2001
 From: Bastian Blank <bastian.blank@credativ.de>
 Date: Thu, 6 Mar 2014 13:43:14 +0100
 Subject: Update defaults
 
-Set default user to nobody and default socket to
-unix:/var/run/milter-regex/sock.
+Set default user to nobody, default socket to
+unix:/var/run/milter-regex/sock and umask to 07.  Document in man-page.
 ---
- milter-regex.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ milter-regex.8 | 4 ++--
+ milter-regex.c | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/milter-regex.8 b/milter-regex.8
+index 065caec..ecbf09c 100644
+--- a/milter-regex.8
++++ b/milter-regex.8
+@@ -70,9 +70,9 @@ Ignore mail body after the specified number of lines.
+ .It Fl p Ar pipe
+ Use the specified pipe to interface
+ .Xr sendmail 8 .
+-Default is unix:/var/spool/milter-regex/sock.
++Default is unix:/var/run/milter-regex/sock.
+ .It Fl u Ar user
+-Run as the specified user instead of the default, _milter-regex.
++Run as the specified user instead of the default, nobody.
+ When
+ .Nm
+ is started as root, it calls
 diff --git a/milter-regex.c b/milter-regex.c
-index 0281748..39e8c7c 100644
+index 0281748..4763c60 100644
 --- a/milter-regex.c
 +++ b/milter-regex.c
 @@ -95,8 +95,8 @@ static sfsistat		 cb_close(SMFICTX *);
@@ -24,3 +41,12 @@ index 0281748..39e8c7c 100644
  #define RCODE_REJECT	"554"
  #define RCODE_TEMPFAIL	"451"
  #define XCODE_REJECT	"5.7.1"
+@@ -782,7 +782,7 @@ main(int argc, char **argv)
+ 		perror("daemon");
+ 		goto done;
+ 	}
+-	umask(0177);
++	umask(07);
+ 
+ 	msg(LOG_INFO, NULL, "started: %s", rcsid);
+ 	r = smfi_main();
