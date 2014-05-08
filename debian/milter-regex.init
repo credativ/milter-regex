@@ -42,9 +42,13 @@ SCRIPTNAME=/etc/init.d/$NAME
 #
 do_start()
 {
-	mkdir -p -m 700 /var/run/milter-regex
-	chown -R $DAEMON_USER:$SOCKET_GROUP /var/run/milter-regex
-	chmod 2750 /var/run/milter-regex
+	if ! [ "$DAEMON_SOCKET" ]; then
+		mkdir -p -m 700 /var/run/milter-regex
+		chown -R $DAEMON_USER:$SOCKET_GROUP /var/run/milter-regex
+		chmod 2750 /var/run/milter-regex
+	else
+		DAEMON_ARGS="$DAEMON_ARGS -p $DAEMON_SOCKET"
+	fi
 
 	# Return
 	#   0 if daemon has been started

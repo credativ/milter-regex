@@ -1,3 +1,4 @@
 # DAEMON_ARGS=""
+# DAEMON_SOCKET="unix:/var/run/milter-regex/sock"
 # DAEMON_USER=nobody
 # SOCKET_GROUP=root
