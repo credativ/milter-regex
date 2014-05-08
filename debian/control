@@ -8,6 +8,6 @@ Homepage: http://www.benzedrine.cx/milter-regex.html
 
 Package: milter-regex
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
 Description: Milter plugin for regular expression filtering
  <insert long description, indented with spaces>

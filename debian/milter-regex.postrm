@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = purge ]; then
+	userdel _milter-regex || :
+fi
+
+#DEBHELPER#
+
+exit 0
