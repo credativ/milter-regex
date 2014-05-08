@@ -1,4 +1,17 @@
-# DAEMON_ARGS=""
-# DAEMON_SOCKET="unix:/var/run/milter-regex/sock"
-# DAEMON_USER=nobody
-# SOCKET_GROUP=root
+# Set the user the daemon runs under.
+# Default: nobody
+#DAEMON_USER=nobody
+
+# Specify the socket to use for milter connections.  Supported are:
+# - UNIX domains sockets (unix:$PATH)
+# - TCP sockets (inet:$PORT)
+# Default: "unix:/var/run/milter-regex/sock"
+#DAEMON_SOCKET="unix:/var/run/milter-regex/sock"
+
+# Set additional arguments for the daemon.
+#DAEMON_ARGS=""
+
+# Specify the group the default UNIX domain socket is created with.  If
+# you use Postfix, set this to "postfix".
+# Default: root
+#SOCKET_GROUP=root
