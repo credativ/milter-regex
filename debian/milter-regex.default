@@ -1,6 +1,6 @@
 # Set the user the daemon runs under.
-# Default: nobody
-#DAEMON_USER=nobody
+# Default: _milter-regex
+#DAEMON_USER=_milter-regex
 
 # Specify the socket to use for milter connections.  Supported are:
 # - UNIX domains sockets (unix:$PATH)
