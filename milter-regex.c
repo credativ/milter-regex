@@ -95,7 +95,7 @@ static sfsistat		 cb_close(SMFICTX *);
 static void		 usage(const char *);
 static void		 msg(int, struct context *, const char *, ...);
 
-#define USER		"nobody"
+#define USER		"_milter-regex"
 #define OCONN		"unix:/var/run/milter-regex/sock"
 #define RCODE_REJECT	"554"
 #define RCODE_TEMPFAIL	"451"

@@ -1,42 +1,37 @@
-From 9325cf2647d7dcddec86582ca6f76ac38d3254f5 Mon Sep 17 00:00:00 2001
+From c3ca8c66afd84c9a300261bd2671d7ce43624ef5 Mon Sep 17 00:00:00 2001
 From: Bastian Blank <bastian.blank@credativ.de>
 Date: Thu, 6 Mar 2014 13:43:14 +0100
 Subject: Update defaults
 
-Set default user to nobody, default socket to
-unix:/var/run/milter-regex/sock and umask to 07.  Document in man-page.
+Set default socket to unix:/var/run/milter-regex/sock and umask to 07.
+Document in man-page.
 ---
- milter-regex.8 | 4 ++--
- milter-regex.c | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ milter-regex.8 | 2 +-
+ milter-regex.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/milter-regex.8 b/milter-regex.8
-index 065caec..ecbf09c 100644
+index 065caec..a4bbcc1 100644
 --- a/milter-regex.8
 +++ b/milter-regex.8
-@@ -70,9 +70,9 @@ Ignore mail body after the specified number of lines.
+@@ -70,7 +70,7 @@ Ignore mail body after the specified number of lines.
  .It Fl p Ar pipe
  Use the specified pipe to interface
  .Xr sendmail 8 .
 -Default is unix:/var/spool/milter-regex/sock.
 +Default is unix:/var/run/milter-regex/sock.
  .It Fl u Ar user
--Run as the specified user instead of the default, _milter-regex.
-+Run as the specified user instead of the default, nobody.
+ Run as the specified user instead of the default, _milter-regex.
  When
- .Nm
- is started as root, it calls
 diff --git a/milter-regex.c b/milter-regex.c
-index 0281748..4763c60 100644
+index 0281748..037613d 100644
 --- a/milter-regex.c
 +++ b/milter-regex.c
-@@ -95,8 +95,8 @@ static sfsistat		 cb_close(SMFICTX *);
- static void		 usage(const char *);
+@@ -96,7 +96,7 @@ static void		 usage(const char *);
  static void		 msg(int, struct context *, const char *, ...);
  
--#define USER		"_milter-regex"
+ #define USER		"_milter-regex"
 -#define OCONN		"unix:/var/spool/milter-regex/sock"
-+#define USER		"nobody"
 +#define OCONN		"unix:/var/run/milter-regex/sock"
  #define RCODE_REJECT	"554"
  #define RCODE_TEMPFAIL	"451"
