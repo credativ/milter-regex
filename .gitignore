@@ -1,0 +1,5 @@
+*.o
+milter-regex
+milter-regex.cat8
+y.tab.c
+y.tab.h
