@@ -596,7 +596,7 @@ cb_eom(SMFICTX *ctx)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s",
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
-	if (context->quarantine != NULL) {
+	if (context->quarantine != NULL && !dry) {
 		msg(LOG_NOTICE, context, "QUARANTINE: %s, HELO: %s, FROM: %s, "
 		    "RCPT: %s, From: %s, To: %s, Subject: %s", action->msg,
 		    context->helo, context->env_from, context->env_rcpt,
