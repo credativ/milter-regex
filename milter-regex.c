@@ -634,7 +634,7 @@ cb_close(SMFICTX *ctx)
 struct smfiDesc smfilter = {
 	"milter-regex",	/* filter name */
 	SMFI_VERSION,	/* version code -- do not change */
-	SMFIF_QUARANTINE, /* flags */
+	SMFIF_QUARANTINE | SMFIF_ADDHDRS, /* flags */
 	cb_connect,	/* connection info filter */
 	cb_helo,	/* SMTP HELO command filter */
 	cb_envfrom,	/* envelope sender filter */
