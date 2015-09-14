@@ -30,7 +30,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: milter-regex.c,v 1.13 2013/11/25 08:41:55 dhartmei Exp $";
+static const char rcsid[] = "$Id: milter-regex.c,v 1.14 2015/09/14 17:52:05 dhartmei Exp $";
 
 #include <sys/types.h>
 #include <sys/socket.h>
