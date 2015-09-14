@@ -673,7 +673,7 @@ msg(int priority, struct context *context, const char *fmt, ...)
 static void
 usage(const char *argv0)
 {
-	fprintf(stderr, "usage: %s [-d] [-c config] [-m number] [-u user] "
+	fprintf(stderr, "usage: %s [-d] [-n] [-c config] [-m number] [-u user] "
 	    "[-p pipe]\n", argv0);
 	exit(1);
 }
