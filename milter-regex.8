@@ -55,6 +55,12 @@ The options are as follows:
 .It Fl d
 Don't detach from controlling terminal and produce verbose debug
 output on stdout.
+.It Fl n
+Don't do anything except adding header "X-MILTER-REGEX" with the
+result. Mail won't be rejected, tempfail-ed or quarantined by this
+milter.
+
+This option may be used for debugging purposes.
 .It Fl c Ar config
 Use the specified configuration file instead of the default,
 /etc/milter-regex.conf.

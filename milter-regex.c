@@ -30,7 +30,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: milter-regex.c,v 1.13 2013/11/25 08:41:55 dhartmei Exp $";
+static const char rcsid[] = "$Id: milter-regex.c,v 1.14 2015/09/14 17:52:05 dhartmei Exp $";
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -60,6 +60,7 @@ extern int	 parse_ruleset(const char *, struct ruleset **, char *,
 
 static const char	*rule_file_name = "/etc/milter-regex.conf";
 static int		 debug = 0;
+static int		 dry = 0;
 static unsigned		 maxlines = 0;
 static pthread_mutex_t	 mutex;
 
@@ -209,6 +210,7 @@ setreply(SMFICTX *ctx, struct context *context, const struct action *action)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s", action->msg,
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
+		smfi_addheader(ctx, "X-MILTER-REGEX", "Reject");
 		result = SMFIS_REJECT;
 		break;
 	case ACTION_TEMPFAIL:
@@ -216,11 +218,13 @@ setreply(SMFICTX *ctx, struct context *context, const struct action *action)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s", action->msg,
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
+		smfi_addheader(ctx, "X-MILTER-REGEX", "Tempfail");
 		result = SMFIS_TEMPFAIL;
 		break;
 	case ACTION_QUARANTINE:
 		if (context->quarantine != NULL)
 			free(context->quarantine);
+		smfi_addheader(ctx, "X-MILTER-REGEX", "Quarantine");
 		context->quarantine = strdup(action->msg);
 		break;
 	case ACTION_DISCARD:
@@ -228,6 +232,7 @@ setreply(SMFICTX *ctx, struct context *context, const struct action *action)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s",
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
+		smfi_addheader(ctx, "X-MILTER-REGEX", "Discard");
 		result = SMFIS_DISCARD;
 		break;
 	case ACTION_ACCEPT:
@@ -235,9 +240,14 @@ setreply(SMFICTX *ctx, struct context *context, const struct action *action)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s",
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
+		smfi_addheader(ctx, "X-MILTER-REGEX", "Accept");
 		result = SMFIS_ACCEPT;
 		break;
 	}
+
+	if (dry)
+		return SMFIS_CONTINUE;
+
 	if (action->type == ACTION_REJECT &&
 	    smfi_setreply(ctx, RCODE_REJECT, XCODE_REJECT,
 	    (char *)action->msg) != MI_SUCCESS)
@@ -246,6 +256,7 @@ setreply(SMFICTX *ctx, struct context *context, const struct action *action)
 	    smfi_setreply(ctx, RCODE_TEMPFAIL, XCODE_TEMPFAIL,
 	    (char *)action->msg) != MI_SUCCESS)
 		msg(LOG_ERR, context, "smfi_setreply");
+
 	return (result);
 }
 
@@ -585,7 +596,7 @@ cb_eom(SMFICTX *ctx)
 		    "RCPT: %s, From: %s, To: %s, Subject: %s",
 		    context->helo, context->env_from, context->env_rcpt,
 		    context->hdr_from, context->hdr_to, context->hdr_subject);
-	if (context->quarantine != NULL) {
+	if (context->quarantine != NULL && !dry) {
 		msg(LOG_NOTICE, context, "QUARANTINE: %s, HELO: %s, FROM: %s, "
 		    "RCPT: %s, From: %s, To: %s, Subject: %s", action->msg,
 		    context->helo, context->env_from, context->env_rcpt,
@@ -623,7 +634,7 @@ cb_close(SMFICTX *ctx)
 struct smfiDesc smfilter = {
 	"milter-regex",	/* filter name */
 	SMFI_VERSION,	/* version code -- do not change */
-	SMFIF_QUARANTINE, /* flags */
+	SMFIF_QUARANTINE | SMFIF_ADDHDRS, /* flags */
 	cb_connect,	/* connection info filter */
 	cb_helo,	/* SMTP HELO command filter */
 	cb_envfrom,	/* envelope sender filter */
@@ -662,7 +673,7 @@ msg(int priority, struct context *context, const char *fmt, ...)
 static void
 usage(const char *argv0)
 {
-	fprintf(stderr, "usage: %s [-d] [-c config] [-m number] [-u user] "
+	fprintf(stderr, "usage: %s [-d] [-n] [-c config] [-m number] [-u user] "
 	    "[-p pipe]\n", argv0);
 	exit(1);
 }
@@ -690,13 +701,16 @@ main(int argc, char **argv)
 	tzset();
 	openlog("milter-regex", LOG_PID | LOG_NDELAY, LOG_DAEMON);
 
-	while ((ch = getopt(argc, argv, "c:dj:l:m:p:u:")) != -1) {
+	while ((ch = getopt(argc, argv, "c:dnj:l:m:p:u:")) != -1) {
 		switch (ch) {
 		case 'c':
 			rule_file_name = optarg;
 			break;
 		case 'd':
 			debug = 1;
+			break;
+		case 'n':
+			dry = 1;
 			break;
 		case 'j':
 			jail = optarg;
